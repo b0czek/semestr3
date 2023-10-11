@@ -1,0 +1,4 @@
+/home/dariusz/Desktop/sem3/tep/lista1/cmake-build-debug/CMakeFiles/zad1.dir
+/home/dariusz/Desktop/sem3/tep/lista1/cmake-build-debug/CMakeFiles/zad2.dir
+/home/dariusz/Desktop/sem3/tep/lista1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/dariusz/Desktop/sem3/tep/lista1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

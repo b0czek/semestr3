@@ -1,0 +1,4 @@
+/home/dariusz/Desktop/sem3/tep/untitled/cmake-build-debug/CMakeFiles/sraka.dir
+/home/dariusz/Desktop/sem3/tep/untitled/cmake-build-debug/CMakeFiles/srak2.dir
+/home/dariusz/Desktop/sem3/tep/untitled/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/dariusz/Desktop/sem3/tep/untitled/cmake-build-debug/CMakeFiles/rebuild_cache.dir
