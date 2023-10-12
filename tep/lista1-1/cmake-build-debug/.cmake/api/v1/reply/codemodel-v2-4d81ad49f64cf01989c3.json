@@ -16,7 +16,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -32,7 +33,8 @@
 					"targetIndexes" : 
 					[
 						0,
-						1
+						1,
+						2
 					]
 				}
 			],
@@ -50,6 +52,13 @@
 					"id" : "zad23::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-zad23-Debug-871d7201787e92bc847f.json",
 					"name" : "zad23",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "zad4::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-zad4-Debug-452a782471443bbeb54c.json",
+					"name" : "zad4",
 					"projectIndex" : 0
 				}
 			]

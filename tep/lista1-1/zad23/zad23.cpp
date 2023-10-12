@@ -3,10 +3,13 @@
 
 
 bool b_alloc_table_2_dim(int ***piTable, int iSizeX, int iSizeY) {
-    if(iSizeX <= 0 || iSizeY < 0) {
+    if (iSizeX <= 0 || iSizeY < 0) {
         return false;
     }
-    int** table = new int*[iSizeX];
+    if (piTable == NULL) {
+        return false;
+    }
+    int **table = new int *[iSizeX];
     for (int i = 0; i < iSizeX; i++) {
         *(table + i) = new int[iSizeY];
     }
@@ -16,7 +19,10 @@ bool b_alloc_table_2_dim(int ***piTable, int iSizeX, int iSizeY) {
 }
 
 bool b_dealloc_table_2_dim(int **piTable, int iSizeX, int iSizeY) {
-    if(iSizeX <= 0) {
+    if (iSizeX <= 0) {
+        return false;
+    }
+    if (piTable == NULL) {
         return false;
     }
     for (int i = 0; i < iSizeX; i++) {
@@ -26,11 +32,13 @@ bool b_dealloc_table_2_dim(int **piTable, int iSizeX, int iSizeY) {
     return true;
 
 }
+
 int main() {
-    int** pi_table;
+    int **pi_table;
     b_alloc_table_2_dim(&pi_table, ZAD2_ISIZE_X, ZAD2_ISIZE_Y);
 
     b_dealloc_table_2_dim(pi_table, ZAD2_ISIZE_X, ZAD2_ISIZE_Y);
+    pi_table = NULL;
 
     return 0;
 }

@@ -102,6 +102,43 @@ build zad23: CXX_EXECUTABLE_LINKER__zad23_Debug CMakeFiles/zad23.dir/zad23/zad23
   TARGET_FILE = zad23
   TARGET_PDB = zad23.dbg
 
+# =============================================================================
+# Object build statements for EXECUTABLE target zad4
+
+
+#############################################
+# Order-only phony target for zad4
+
+build cmake_object_order_depends_target_zad4: phony || CMakeFiles/zad4.dir
+
+build CMakeFiles/zad4.dir/zad4/zad4.cpp.o: CXX_COMPILER__zad4_unscanned_Debug /home/dariusz/Desktop/sem3/tep/lista1-1/zad4/zad4.cpp || cmake_object_order_depends_target_zad4
+  DEP_FILE = CMakeFiles/zad4.dir/zad4/zad4.cpp.o.d
+  FLAGS = -g -std=gnu++98 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/zad4.dir
+  OBJECT_FILE_DIR = CMakeFiles/zad4.dir/zad4
+
+build CMakeFiles/zad4.dir/zad4/CTable.cpp.o: CXX_COMPILER__zad4_unscanned_Debug /home/dariusz/Desktop/sem3/tep/lista1-1/zad4/CTable.cpp || cmake_object_order_depends_target_zad4
+  DEP_FILE = CMakeFiles/zad4.dir/zad4/CTable.cpp.o.d
+  FLAGS = -g -std=gnu++98 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/zad4.dir
+  OBJECT_FILE_DIR = CMakeFiles/zad4.dir/zad4
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target zad4
+
+
+#############################################
+# Link the executable zad4
+
+build zad4: CXX_EXECUTABLE_LINKER__zad4_Debug CMakeFiles/zad4.dir/zad4/zad4.cpp.o CMakeFiles/zad4.dir/zad4/CTable.cpp.o
+  FLAGS = -g
+  OBJECT_DIR = CMakeFiles/zad4.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = zad4
+  TARGET_PDB = zad4.dbg
+
 
 #############################################
 # Utility command for edit_cache
@@ -136,7 +173,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /home/dariusz/Desktop/sem3/tep/lista1-1/cmake-build-debug
 
-build all: phony zad1 zad23
+build all: phony zad1 zad23 zad4
 
 # =============================================================================
 # Built-in targets

@@ -11,3 +11,9 @@ add_executable(zad1
 add_executable(zad23
         zad23/zad23.cpp
         zad23/zad23.h)
+
+
+add_executable(zad4
+        zad4/zad4.cpp
+        zad4/CTable.cpp
+        zad4/CTable.h)
