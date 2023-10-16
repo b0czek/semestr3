@@ -24,6 +24,9 @@ int main() {
 
     CTable ctt(ct);
 
+    CTable *ctt_clone = ctt.pcClone();
+    delete ctt_clone;
+
     std::cout << "przed v_mod_tab (cTab): " << ctt.iGetSize() << "\n";
     v_mod_tab(ctt, 22);
     std::cout << "po v_mod_tab (cTab): " << ctt.iGetSize() << "\n";

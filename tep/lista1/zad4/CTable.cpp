@@ -67,9 +67,8 @@ int CTable::iGetSize() {
 
 
 CTable *CTable::pcClone() {
-    CTable *c_table = new CTable(s_name, table_len);
-    c_table->vCopyTableFrom(table, table_len);
-    return c_table;
+    return new CTable(*this);
+
 }
 
 void CTable::vCopyTableFrom(int *piTable, int iTableLen) {
