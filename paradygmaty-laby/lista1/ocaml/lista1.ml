@@ -1,6 +1,7 @@
 let reverse4 = fun (a,b,c,d) -> d,c,b,a;;
 
 reverse4(1,2,3,4);;
+reverse4("a", "b", "c", "d");;
 
 let rec sumProd = fun (s,e) -> 
   if s >= e then (0,1) else 
@@ -12,9 +13,11 @@ sumProd(0,1);;
 sumProd(0,0);;
 sumProd(1,2);;
 sumProd(10,12);;
+sumProd(-7,8);;
+sumProd(-7,0);;
     
 let rec sumDivisors = function
-  | (num, 0) -> 0
+  | (num, i) when i <= 0 -> 0
   | (num, i) when num mod i = 0 -> i + sumDivisors(num, i-1)
   | (num, i) -> sumDivisors(num, i - 1) ;;
 
@@ -22,7 +25,7 @@ let isPerfect = function
   | 0 -> false
   | n -> (sumDivisors (n, n/2) = n);;
 
-
+isPerfect(-100);;
 isPerfect 0;;
 isPerfect 1;;
 isPerfect 2;;
@@ -37,10 +40,12 @@ let rec insert = fun (list, element, idx) -> match list with
 
 let table = [1;2;3;4];;
 
+insert([], 1, 1);;
+insert([1;2], 10, -1);;
 insert(table, 12, 0);;
 insert(table, 12, 1);;
 insert(table, 12, 2);;
 insert(table, 12, 3);;
 insert(table, 12, 4);;
 insert(table, 12, 5);;
-
+insert(["a"; "b"; "c"], "x", 1);;

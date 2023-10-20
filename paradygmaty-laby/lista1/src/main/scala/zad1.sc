@@ -18,7 +18,8 @@ sumProd(0,1)
 sumProd(0,0)
 sumProd(1,2)
 sumProd(10,12)
-
+sumProd(-7,8)
+sumProd(-7,0)
 
 // zad 3
 
@@ -30,10 +31,11 @@ def sumDivisors: (num: Int, i: Int) => Int = (num, i) => (num, i) match {
 
 
 def isPerfect(n: Int): Boolean = n match {
-  case 0 => false
+  case n if n <= 0 => false
   case _ => sumDivisors(n, n/2) == n
 }
 
+isPerfect(-100)
 isPerfect(0)
 isPerfect(1)
 isPerfect(2)
@@ -48,10 +50,12 @@ def insert[A](list: List[A], element: A, idx: Int): List[A] = list match {
   case x :: xs => x :: insert(xs, element, idx - 1)
 }
 
+insert(List(), 1, 1);
+insert(List(1,2), 10, -1)
 insert(List(1,2,3,4), 12, 0)
 insert(List(1,2,3,4), 12, 1)
 insert(List(1,2,3,4), 12, 2)
 insert(List(1,2,3,4), 12, 3)
 insert(List(1,2,3,4), 12, 4)
 insert(List(1,2,3,4), 12, 5)
-
+insert(List("a", "b", "c"), "x", 1)
