@@ -24,8 +24,8 @@ CTable::CTable(std::string sName, int iTableLen) {
     vSendMessage("parametr");
 }
 
-CTable::CTable(CTable &pcOther) {
-    s_name = pcOther.s_name + "_copy";
+CTable::CTable(const CTable &pcOther) {
+    s_name = pcOther.s_name + CTABLE_COPY_NAME_SUFFIX;
 
     vSendMessage("kopiuj");
 
@@ -39,7 +39,6 @@ CTable::~CTable() {
     vSendMessage("usuwam");
 
     delete table;
-    table = NULL;
 }
 
 void CTable::vSetName(std::string sName) {
@@ -70,6 +69,13 @@ CTable *CTable::pcClone() {
     return new CTable(*this);
 
 }
+
+// modyfikacja
+void CTable::vDoubleCopy(CTable **pcClone0, CTable **pcClone1) {
+    *pcClone0 = pcClone();
+    *pcClone1 = pcClone();
+}
+
 
 void CTable::vCopyTableFrom(int *piTable, int iTableLen) {
     std::copy(piTable, piTable + iTableLen, table);

@@ -38,7 +38,6 @@ int main() {
     b_alloc_table_2_dim(&pi_table, ZAD2_ISIZE_X, ZAD2_ISIZE_Y);
 
     b_dealloc_table_2_dim(pi_table, ZAD2_ISIZE_X, ZAD2_ISIZE_Y);
-    pi_table = NULL;
 
     return 0;
 }

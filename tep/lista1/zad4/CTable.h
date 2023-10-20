@@ -9,6 +9,7 @@
 
 #define CTABLE_DEFAULT_NAME "table"
 #define CTABLE_DEFAULT_LENGTH 5
+#define CTABLE_COPY_NAME_SUFFIX "_copy"
 
 class CTable {
 public:
@@ -16,7 +17,7 @@ public:
 
     CTable(std::string sName, int iTableLen);
 
-    CTable(CTable &pcOther);
+    CTable(const CTable &pcOther);
 
     ~CTable();
 
@@ -27,6 +28,9 @@ public:
     int iGetSize();
 
     CTable *pcClone();
+
+    // modyfikacja
+    void vDoubleCopy(CTable **pcClone0, CTable **pcClone1);
 
 private:
     void vCopyTableFrom(int *piTable, int iTableLen);
