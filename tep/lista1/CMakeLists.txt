@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.25.3)
 project(lista1_1)
 
 set(CMAKE_CXX_STANDARD 98)
