@@ -84,3 +84,26 @@ println(split3Tail(List(1, 2, 3, 4, 5)))
 println(split3Tail(List(1, 2, 3, 4, 5, 6)))
 println(split3Tail(List(1, 2, 3, 4, 5, 6, 7)))
 println(split3Tail(List(1, 2, 3, 4, 5, 6, 7, 8)))
+
+
+def interleave[A](list1: List[A])(n: Integer)(list2: List[A]): List[A] = {
+  def helper(list1: List[A], list2: List[A], i: Integer): List[A] = (list1, list2) match {
+    case (Nil, _) => Nil
+    case (_, Nil) if i >= n => Nil
+    case (h1::t1, h2::t2) if i >= n => h1 :: h2 :: helper(t1, t2, n)
+    case (h1::t1, l2) => h1:: helper(t1, l2, i + 1)
+  }
+  helper(list1, list2, 1)
+
+}
+interleave(List())(0)(List())
+interleave(List(1,2,3,4,5,6))(0)(List())
+interleave(List(1,2,3,4,5,6))(6)(List())
+interleave(List())(1)(List(1,2,3))
+interleave(List(1,2,3,4,5,6))(-1)(List(1,2,3))
+interleave(List(1,2,3,4,5,6))(-5)(List())
+interleave(List(1,2,3,4,5,6,7,8,9)) (9) (List(1,2,3,4))
+interleave(List(1,2,3,4,5,6,7,8,9)) (4) (List(1,2,3,4))
+interleave(List(1))(1)(List(1,2,3,4))
+interleave(List(1,2,3,4,5,6,7,8,9))(3)(List(1,2,3))
+interleave(List(1,2,3,4,5,6,7,8,9))(10)(List(1,2,3))
