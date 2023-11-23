@@ -1,8 +1,11 @@
 #include <iostream>
-#include "CNode.h"
+#include "UserInterface.h"
 
 int main() {
+    UserInterface userInterface;
+    userInterface.start();
 
-    std::cout << sizeof (char *) << "Hello, World!" << std::endl;
     return 0;
+
+
 }

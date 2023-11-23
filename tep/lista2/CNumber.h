@@ -11,7 +11,7 @@
 #define NUMBER_POSITIVE_SIGN 1
 #define NUMBER_BASE 10
 
-const char DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a','b','c','d','e','f'};
+const char DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 class CNumber {
 public:
@@ -20,6 +20,8 @@ public:
     CNumber(const int value);
 
     CNumber(const CNumber &other);
+
+    CNumber(int *digitsArray, int arrayLength);
 
     ~CNumber();
 
@@ -47,7 +49,7 @@ public:
 
     void setSign(int newSign);
 
-    int compareAbs(CNumber& other);
+    int compareAbs(CNumber &other);
 
 
 private:

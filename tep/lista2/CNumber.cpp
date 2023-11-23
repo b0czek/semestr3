@@ -26,10 +26,20 @@ CNumber::CNumber(const CNumber &other) {
     std::copy(other.digits, other.digits + length, digits);
 }
 
+CNumber::CNumber(int *digitsArray, int arrayLength) {
+    sign = NUMBER_POSITIVE_SIGN;
+    length = arrayLength;
+    size = arrayLength;
+    digits = new int[arrayLength];
+    for (int i = arrayLength - 1; i >= 0; i--) {
+        digits[i] = digitsArray[arrayLength - 1 - i];
+    }
+}
+
+
 CNumber::~CNumber() {
     freeArray();
 }
-
 
 
 void CNumber::operator=(const int value) {
@@ -81,11 +91,37 @@ CNumber CNumber::operator/(int term) {
 }
 
 CNumber CNumber::operator+(CNumber &term) {
-    return addNumber(&term, NUMBER_POSITIVE_SIGN);
+//    return addNumber(&term, NUMBER_POSITIVE_SIGN);
+    CNumber result = CNumber();
+    int outputLength = this->length + term.length;
+    result.allocTable(outputLength);
+
+    int i = 0;
+    for (; i < term.length; i++) {
+        result.digits[i] = term.digits[i];
+    }
+    for (; i < outputLength; i++) {
+        result.digits[i] = this->digits[i - term.length];
+    }
+
+    return result;
 }
 
 CNumber CNumber::operator-(CNumber &term) {
-    return addNumber(&term, NUMBER_NEGATIVE_SIGN);
+//    return addNumber(&term, NUMBER_NEGATIVE_SIGN);
+    if (term.length >= this->length) {
+        return CNumber(0);
+    }
+
+    CNumber result = CNumber();
+    int outputLength = this->length - term.length;
+    result.allocTable(outputLength);
+
+    for (int i = 0; i < outputLength; i++) {
+        result.digits[outputLength - 1 - i] = this->digits[this->length - 1 - i];
+    }
+    return result;
+
 }
 
 CNumber CNumber::operator*(CNumber &term) {
@@ -112,7 +148,7 @@ CNumber CNumber::operator*(CNumber &term) {
     }
     result.trimTable();
 
-    if(result.length == 1 && result.digits[0] == 0) {
+    if (result.length == 1 && result.digits[0] == 0) {
         result.setSign(NUMBER_POSITIVE_SIGN);
     }
 
@@ -353,7 +389,7 @@ CNumber CNumber::addNumber(CNumber *other, int operation) {
     int newSign = bigger == this ? this->sign : rightSign;
     result.setSign(newSign);
 
-    if(result.length == 1 && result.digits[0] == 0) {
+    if (result.length == 1 && result.digits[0] == 0) {
         result.setSign(NUMBER_POSITIVE_SIGN);
     }
 
@@ -391,6 +427,4 @@ int CNumber::getTwoDigitsFromPosition(int position) {
     return (y * NUMBER_BASE) + z;
 
 }
-
-
 
