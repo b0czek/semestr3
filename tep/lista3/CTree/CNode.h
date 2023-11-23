@@ -19,35 +19,43 @@ enum NodeType {
 };
 union NodeData {
     unsigned long constValue;
-    const Operator* operatorType;
+    const Operator *operatorType;
     char *variableName;
-    
+
 };
 
 class CNode {
 public:
     CNode();
-    CNode(const CNode& other);
+
+    CNode(const CNode &other);
+
     ~CNode();
 
-    void copyFrom(const CNode& other);
+    void copyFrom(const CNode &other);
 
     void setData(unsigned long constValue);
-    void setData(const Operator* operatorType);
+
+    void setData(const Operator *operatorType);
+
     void setData(const char *variableName);
 
-    std::vector<CNode *>& getChildren();
-    void addChild(CNode* child);
+    std::vector<CNode *> &getChildren();
+
+    void addChild(CNode *child);
+
     void freeChildren();
 
-    double eval(std::map<std::string, double>& variablesMap);
+    double eval(std::map<std::string, double> &variablesMap);
 
-    void scanVariables(std::set<std::string>& output);
+    void scanVariables(std::set<std::string> &output);
 
     std::string toString();
-    void toString(std::string& string);
+
+    void toString(std::string &string);
 
 private:
+
     NodeType nodeType;
     NodeData nodeData;
 

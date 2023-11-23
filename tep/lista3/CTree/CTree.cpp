@@ -10,16 +10,17 @@ CTree::CTree() {
 CTree::~CTree() {
 }
 
-std::string CTree::toString() {
-    return root.toString();
+void CTree::parse(const char *data, Parser &parser) {
+    root.freeChildren();
+    parser.parse(data, &root);
+    variables = parser.getVariables();
 }
 
-double CTree::eval(std::map<std::string, double> &variablesMap) {
-    return root.eval(variablesMap);
+void CTree::parse(std::string &data, Parser &parser) {
+    parse(data.c_str(), parser);
 }
 
-
-CTree& CTree::operator=(const CTree &cOther) {
+CTree &CTree::operator=(const CTree &cOther) {
     root.copyFrom(cOther.root);
     variables = cOther.variables;
 
@@ -27,8 +28,8 @@ CTree& CTree::operator=(const CTree &cOther) {
 }
 
 CTree &CTree::operator+(const CTree &cOther) {
-    CTree* newTree = new CTree(*this);
-    CNode* joinedAt = newTree->leftmostLeaf();
+    CTree *newTree = new CTree(*this);
+    CNode *joinedAt = newTree->leftmostLeaf();
     joinedAt->copyFrom(cOther.root);
 
     newTree->scanVariables();
@@ -36,22 +37,12 @@ CTree &CTree::operator+(const CTree &cOther) {
     return *newTree;
 }
 
-CNode *CTree::leftmostLeaf() {
-    CNode* leaf = &root;
-    while(leaf->getChildren().size() != 0) {
-        leaf = leaf->getChildren()[0];
-    }
-    return leaf;
+std::string CTree::toString() {
+    return root.toString();
 }
 
-void CTree::parse(const char *data, Parser &parser) {
-    root.freeChildren();
-    parser.parse(data, &root);
-    variables = parser.getVariables();
-}
-
-void CTree::parse(std::string& data, Parser &parser) {
-    parse(data.c_str(), parser);
+double CTree::eval(std::map<std::string, double> &variablesMap) {
+    return root.eval(variablesMap);
 }
 
 const std::set<std::string> &CTree::getVariables() const {
@@ -62,3 +53,14 @@ void CTree::scanVariables() {
     variables.clear();
     root.scanVariables(variables);
 }
+
+CNode *CTree::leftmostLeaf() {
+    CNode *leaf = &root;
+    while (leaf->getChildren().size() != 0) {
+        leaf = leaf->getChildren()[0];
+    }
+    return leaf;
+}
+
+
+

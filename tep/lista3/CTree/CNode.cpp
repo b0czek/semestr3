@@ -12,12 +12,31 @@ CNode::CNode() {
     nodeData.constValue = 1;
 }
 
+CNode::CNode(const CNode &other) {
+    copyFrom(other);
+}
+
 CNode::~CNode() {
     if (nodeType == VARIABLE) {
         delete nodeData.variableName;
     }
     freeChildren();
 
+}
+
+void CNode::copyFrom(const CNode &other) {
+    freeChildren();
+
+    nodeType = other.nodeType;
+    if (nodeType == VARIABLE) {
+        nodeData.variableName = strdup(other.nodeData.variableName);
+    } else {
+        nodeData = other.nodeData;
+    }
+
+    for (int i = 0; i < other.children.size(); i++) {
+        children.push_back(new CNode(*other.children[i]));
+    }
 }
 
 void CNode::setData(unsigned long constValue) {
@@ -35,35 +54,12 @@ void CNode::setData(const char *variableName) {
     nodeData.variableName = strdup(variableName);
 }
 
+std::vector<CNode *> &CNode::getChildren() {
+    return children;
+}
+
 void CNode::addChild(CNode *child) {
     children.push_back(child);
-}
-
-std::string CNode::toString() {
-    std::string result;
-    toString(result);
-    return result;
-}
-
-void CNode::toString(std::string &string) {
-    switch (nodeType) {
-        case VARIABLE:
-            string += nodeData.variableName;
-            break;
-        case CONSTANT: {
-            char buffer[MAX_LONG_LENGTH + 1];
-            sprintf(buffer, "%lu", nodeData.constValue);
-            string += buffer;
-            break;
-        }
-        case OPERATOR:
-            string += nodeData.operatorType->symbol;
-            for (int i = 0; i < nodeData.operatorType->argumentCount; i++) {
-                string += " ";
-                children[i]->toString(string);
-            }
-            break;
-    }
 }
 
 void CNode::freeChildren() {
@@ -93,32 +89,8 @@ double CNode::eval(std::map<std::string, double> &variablesMap) {
     }
 }
 
-CNode::CNode(const CNode &other) {
-    copyFrom(other);
-}
-
-void CNode::copyFrom(const CNode &other) {
-    freeChildren();
-
-    nodeType = other.nodeType;
-    if(nodeType == VARIABLE) {
-        nodeData.variableName = strdup(other.nodeData.variableName);
-    }
-    else {
-        nodeData = other.nodeData;
-    }
-
-    for(int i = 0 ; i < other.children.size(); i++) {
-        children.push_back(new CNode(*other.children[i]));
-    }
-}
-
-std::vector<CNode *> &CNode::getChildren() {
-    return children;
-}
-
 void CNode::scanVariables(std::set<std::string> &output) {
-    if(nodeType == VARIABLE) {
+    if (nodeType == VARIABLE) {
         output.insert(nodeData.variableName);
     }
     for (int i = 0; i < children.size(); i++) {
@@ -126,5 +98,29 @@ void CNode::scanVariables(std::set<std::string> &output) {
     }
 }
 
+std::string CNode::toString() {
+    std::string result;
+    toString(result);
+    return result;
+}
 
-
+void CNode::toString(std::string &string) {
+    switch (nodeType) {
+        case VARIABLE:
+            string += nodeData.variableName;
+            break;
+        case CONSTANT: {
+            char buffer[MAX_LONG_LENGTH + 1];
+            sprintf(buffer, "%lu", nodeData.constValue);
+            string += buffer;
+            break;
+        }
+        case OPERATOR:
+            string += nodeData.operatorType->symbol;
+            for (int i = 0; i < nodeData.operatorType->argumentCount; i++) {
+                string += " ";
+                children[i]->toString(string);
+            }
+            break;
+    }
+}

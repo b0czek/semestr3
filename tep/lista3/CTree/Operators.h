@@ -8,29 +8,17 @@
 #include <vector>
 #include <cmath>
 
-inline double operator_add(double *args) {
-    return args[0] + args[1];
-}
+double operator_add(double *args);
 
-inline double operator_sub(double *args) {
-    return args[0] - args[1];
-}
+double operator_sub(double *args);
 
-inline double operator_mul(double *args) {
-    return args[0] * args[1];
-}
+double operator_mul(double *args);
 
-inline double operator_div(double *args) {
-    return args[0] / args[1];
-}
+double operator_div(double *args);
 
-inline double operator_sin(double *args) {
-    return std::sin(args[0]);
-}
+double operator_sin(double *args);
 
-inline double operator_cos(double *args) {
-    return std::cos(args[0]);
-}
+double operator_cos(double *args);
 
 #define OPERATOR_ADD "+"
 #define OPERATOR_SUB "-"
@@ -52,7 +40,8 @@ struct Operator {
     double (*execute)(double *args);
 };
 
-const Operator operators[] = {
+
+const Operator operatorsArray[] = {
         {OPERATOR_ADD, OPERATOR_ADD_ARGS, operator_add},
         {OPERATOR_SUB, OPERATOR_SUB_ARGS, operator_sub},
         {OPERATOR_MUL, OPERATOR_MUL_ARGS, operator_mul},
@@ -61,6 +50,15 @@ const Operator operators[] = {
         {OPERATOR_COS, OPERATOR_COS_ARGS, operator_cos},
 };
 
-int findOperatorIdx(const char *symbol, int symbolLength);
+struct Operators {
+    const Operator *operators;
+    const int operatorsCount;
+};
+const Operators operators = {
+        .operators = operatorsArray,
+        .operatorsCount = sizeof(operatorsArray) / sizeof(Operator)
+};
+
+int findOperatorIdx(const Operators *ops, const char *symbol, int symbolLength);
 
 #endif //LISTA3_OPERATORS_H

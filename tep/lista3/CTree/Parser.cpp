@@ -6,13 +6,48 @@
 #include <cstdio>
 #include "Parser.h"
 
-const char* ParseErrorTypeLabels[] = {
+const char *ParseErrorTypeLabels[] = {
         "PARSE_ERR_ARG_COUNT",
         "PARSE_ERR_VARIABLE_NAME",
         "PARSE_ERR_UNKNOWN_TOKEN",
         "PARSE_ERR_UNEXPECTED_TOKEN",
 };
 
+Parser::Parser(const Operators *operators) : ops(operators), unknownTokenCounter(0) {
+
+}
+
+Parser::Parser() : ops(&operators), unknownTokenCounter(0) {
+
+}
+
+void Parser::parse(const char *data, CNode *output) {
+    unknownTokenCounter = 0;
+    parseErrors.clear();
+    variables.clear();
+
+    parse(&data, output);
+
+    // extract redundant tokens and add to errors
+    Token token;
+    do {
+        extractToken(&data, &token);
+        if (token.length != 0) {
+            parseErrors.push_back((struct ParseError) {
+                    PARSE_ERR_UNEXPECTED_TOKEN, tokenToString(&token), ""
+            });
+        }
+    } while (token.length != 0);
+
+}
+
+const std::vector<ParseError> &Parser::getParseErrors() const {
+    return parseErrors;
+}
+
+const std::set<std::string> &Parser::getVariables() const {
+    return variables;
+}
 
 void Parser::parse(const char **data, CNode *node) {
     Token token;
@@ -28,9 +63,9 @@ void Parser::parse(const char **data, CNode *node) {
 
 
     // check if token is a symbol of any operator
-    int operatorIdx = findOperatorIdx(token.start, token.length);
+    int operatorIdx = findOperatorIdx(ops, token.start, token.length);
     if (operatorIdx != -1) {
-        const Operator *op = (operators + operatorIdx);
+        const Operator *op = (ops->operators + operatorIdx);
 
         node->setData(op);
         for (int i = 0; i < op->argumentCount; i++) {
@@ -52,7 +87,7 @@ void Parser::parse(const char **data, CNode *node) {
 
         delete[] variableName;
 
-        if(variableLength != token.length) {
+        if (variableLength != token.length) {
             parseErrors.push_back((struct ParseError) {
                     PARSE_ERR_VARIABLE_NAME, tokenToString(&token), node->toString()
             });
@@ -110,15 +145,6 @@ bool Parser::isNumber(Token *token) {
     return true;
 }
 
-unsigned long Parser::toNumber(Token *token) {
-    unsigned long result = 0;
-    for (int i = 0; i < token->length; i++) {
-        result *= NUMBER_BASE;
-        result += (*(token->start + i) - '0');
-    }
-    return result;
-}
-
 bool Parser::hasLetter(Token *token) {
     for (int i = 0; i < token->length; i++) {
         const char character = token->start[i];
@@ -133,7 +159,7 @@ int Parser::toVariable(Token *token, char *outputBuffer) {
     int position = 0;
     for (int i = 0; i < token->length; i++) {
         const char character = token->start[i];
-        if(isLetter(character) || isDigit(character)) {
+        if (isLetter(character) || isDigit(character)) {
             outputBuffer[position] = character;
             position++;
         }
@@ -142,37 +168,19 @@ int Parser::toVariable(Token *token, char *outputBuffer) {
     return position;
 }
 
-void Parser::parse(const char *data, CNode* output) {
-    unknownTokenCounter = 0;
-    parseErrors.clear();
-    variables.clear();
-
-    parse(&data, output);
-
-    // extract redundant tokens and add to errors
-    Token token;
-    do {
-        extractToken(&data, &token);
-        if(token.length != 0) {
-            parseErrors.push_back((struct ParseError) {
-                    PARSE_ERR_UNEXPECTED_TOKEN, tokenToString(&token), ""
-            });
-        }
-    } while(token.length != 0);
-
-}
-
-const std::list<ParseError> &Parser::getParseErrors() const {
-    return parseErrors;
-}
-
-const std::set<std::string> &Parser::getVariables() const {
-    return variables;
+unsigned long Parser::toNumber(Token *token) {
+    unsigned long result = 0;
+    for (int i = 0; i < token->length; i++) {
+        result *= NUMBER_BASE;
+        result += (*(token->start + i) - '0');
+    }
+    return result;
 }
 
 std::string Parser::tokenToString(Token *token) {
-    char* buffer = strndup(token->start, token->length);
+    char *buffer = strndup(token->start, token->length);
     std::string result(buffer);
     free(buffer);
     return result;
 }
+

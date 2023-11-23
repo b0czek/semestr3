@@ -5,7 +5,6 @@
 #ifndef LISTA3_PARSER_H
 #define LISTA3_PARSER_H
 
-#include <list>
 #include <cmath>
 #include <set>
 #include "CNode.h"
@@ -18,12 +17,11 @@
     (sizeof (UNKNOWN_VARIABLE_NAME) / sizeof (char))
 
 struct Token {
-    const char* start;
+    const char *start;
     int length;
 };
 
-
-extern const char* ParseErrorTypeLabels[];
+extern const char *ParseErrorTypeLabels[];
 
 enum ParseErrorType {
     PARSE_ERR_ARG_COUNT,
@@ -40,38 +38,48 @@ struct ParseError {
 
 class Parser {
 public:
-    void parse(const char* data, CNode* output);
+    Parser(const Operators *operators);
 
-    const std::list<ParseError> &getParseErrors() const;
+    Parser();
+
+    void parse(const char *data, CNode *output);
+
+    const std::vector<ParseError> &getParseErrors() const;
+
     const std::set<std::string> &getVariables() const;
-private:
-    void parse(const char** data, CNode* node);
 
-    static void trimSpaces(const char** data);
-    static void extractToken(const char **data, Token* output);
-    static bool isNumber(Token* token);
+private:
+    void parse(const char **data, CNode *node);
+
+    static void trimSpaces(const char **data);
+
+    static void extractToken(const char **data, Token *output);
+
+    static bool isNumber(Token *token);
+
     static bool hasLetter(Token *token);
 
     // copies all characters that are allowed in a variableName into buffer
     // and adds null terminator at the end
     // returns length of copied characters(excluding '\0')
-    static int toVariable(Token *token, char* outputBuffer);
+    static int toVariable(Token *token, char *outputBuffer);
 
     // basically atol with length of string to convert
-    static unsigned long toNumber(Token* token);
+    static unsigned long toNumber(Token *token);
 
-    static std::string tokenToString(Token* token);
+    static std::string tokenToString(Token *token);
 
     static inline bool isLetter(const char character) {
         return (character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z');
     }
+
     static inline bool isDigit(const char character) {
         return character >= '0' && character <= '9';
     }
 
-private:
+    const Operators *ops;
 
-    std::list<ParseError> parseErrors;
+    std::vector<ParseError> parseErrors;
     std::set<std::string> variables;
     unsigned int unknownTokenCounter;
 };

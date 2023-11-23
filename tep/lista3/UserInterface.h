@@ -6,7 +6,6 @@
 #define LISTA3_USERINTERFACE_H
 
 #include "CTree.h"
-#include "Parser.h"
 
 #define UI_CMD_ENTER "enter"
 #define UI_CMD_VARS "vars"
@@ -15,16 +14,17 @@
 #define UI_CMD_JOIN "join"
 
 
-
 class UserInterface {
 public:
+    UserInterface();
+
     void start();
 
 private:
 
-    bool getVariablesMap(std::string& input, std::map<std::string, double> &output);
+    bool getVariablesMap(std::string &input, std::map<std::string, double> &output);
 
-    static inline bool startsWithCommand(const char *command, std::string& input);
+    static inline bool startsWithCommand(const char *command, std::string &input);
 
     void printParseErrors();
 
