@@ -2,6 +2,7 @@
 // Created by dariusz on 15.11.23.
 //
 
+#include <iostream>
 #include "CTree.h"
 
 CTree::CTree() {
@@ -58,9 +59,37 @@ CNode *CTree::leftmostLeaf() {
     CNode *leaf = &root;
     while (leaf->getChildren().size() != 0) {
         leaf = leaf->getChildren()[0];
+
     }
     return leaf;
 }
 
+void CTree::levels() {
+    bool result = false;
+    int i = 1;
+    do {
+        result = printLevel(&root, i);
+        i++;
+        std::cout << "\n";
+    } while(result);
+}
 
+bool CTree::printLevel(CNode *node, int level) {
+    if(level == 1) {
+        std::cout << node->toString(true);
+        return true;
+    }
+    else {
+        std::vector<CNode *> children = node->getChildren();
+        if(children.size() == 0){
+            return false;
+        }
+        int result = 0;
+        for(int i = 0 ; i < children.size(); i++) {
+            result += printLevel(children[i], level - 1);
+            std::cout << " ";
+        }
+        return result != 0;
+    }
+}
 

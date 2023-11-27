@@ -5,7 +5,7 @@ let distance ((a,b): point2D) = sqrt(a *. a +. b *. b);;
 
 
 (* 2 *)
-type gender = Male | Female;;
+type gender = Male | Female | Other of string;;
 
 type person = string * string * gender * int * int;;
 type partnership = person * person;;
@@ -78,5 +78,44 @@ type solidFigure =
 let volume = function
   | Cuboid(x,y,z) -> x *. y *. z
   | Cone(r, h) -> Float.pi *. r *. r *. h /. 3.
-  | Sphere(r) -> Float.pi *. r *. r *. r
+  | Sphere(r) -> Float.pi *. r *. r *. r *. 4. /. 3.  
   | Cylinder(r, h) -> Float.pi *. r *. r *. h;;
+
+
+
+
+let rec stirling = function
+  | (0,0) -> 1
+  | (_, 1) -> 1
+  | (_, 0) -> 0
+  | (n,m) when n = m -> 1
+  | (n,m) -> stirling(n-1,m-1) + m * stirling(n - 1, m);;
+
+type nm = int * int;;
+  
+let memoized_stirling =
+  let memo = Hashtbl.create 100 in
+  let stirling' (arg: nm) =
+    if Hashtbl.mem memo arg then Hashtbl.find memo arg else
+      let value = stirling arg in
+      Hashtbl.add memo arg value;
+      value 
+  in
+  stirling';;
+
+memoized_stirling (40, 9);;
+
+let make_memoize f = 
+  let memo = Hashtbl.create 10 in
+  let f' args =
+  if Hashtbl.mem memo args then Hashtbl.find memo args else
+    let value = f args in
+    Hashtbl.add memo args value;
+    value 
+in
+f';;
+
+
+
+let stirling_value = lazy (stirling (40,9));;
+print_int (Lazy.force stirling_value);;

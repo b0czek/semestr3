@@ -50,9 +50,9 @@ public:
 
     void scanVariables(std::set<std::string> &output);
 
-    std::string toString();
+    std::string toString(int shortened = false);
 
-    void toString(std::string &string);
+    void toString(std::string &string, int shortened);
 
 private:
 

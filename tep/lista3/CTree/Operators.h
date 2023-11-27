@@ -37,7 +37,7 @@ struct Operator {
     const char *const symbol;
     const int argumentCount;
 
-    double (*execute)(double *args);
+    double (* const execute)(double *args);
 };
 
 

@@ -89,6 +89,6 @@ case class Cylinder(r: Float, h: Float) extends SolidFigure
 def volume(figure: SolidFigure): Float = figure match {
   case Cuboid(x, y, z) => x * y * z
   case Cone(r, h) => Math.PI.toFloat * r * r * h / 3.0f
-  case Sphere(r) => Math.PI.toFloat * r * r * r
+  case Sphere(r) => Math.PI.toFloat * r * r * r * 4 / 3
   case Cylinder(r, h) => Math.PI.toFloat * r * r * h
 }

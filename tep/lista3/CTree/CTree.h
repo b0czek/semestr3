@@ -32,7 +32,11 @@ public:
 
     const std::set<std::string> &getVariables() const;
 
+    void levels();
+
 private:
+    bool printLevel(CNode *node, int level);
+
     void scanVariables();
 
     CNode *leftmostLeaf();

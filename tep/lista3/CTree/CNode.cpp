@@ -98,13 +98,13 @@ void CNode::scanVariables(std::set<std::string> &output) {
     }
 }
 
-std::string CNode::toString() {
+std::string CNode::toString(int shortened) {
     std::string result;
-    toString(result);
+    toString(result, shortened);
     return result;
 }
 
-void CNode::toString(std::string &string) {
+void CNode::toString(std::string &string, int shortened) {
     switch (nodeType) {
         case VARIABLE:
             string += nodeData.variableName;
@@ -117,10 +117,13 @@ void CNode::toString(std::string &string) {
         }
         case OPERATOR:
             string += nodeData.operatorType->symbol;
-            for (int i = 0; i < nodeData.operatorType->argumentCount; i++) {
-                string += " ";
-                children[i]->toString(string);
+            if(!shortened) {
+                for (int i = 0; i < nodeData.operatorType->argumentCount; i++) {
+                    string += " ";
+                    children[i]->toString(string, shortened);
+                }
             }
             break;
     }
 }
+

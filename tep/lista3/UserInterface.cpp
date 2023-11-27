@@ -53,7 +53,10 @@ void UserInterface::start() {
 
             newTree = tree + secondTree;
             tree = newTree;
-        } else {
+        } else if(startsWithCommand(UI_CMD_LEVELS, input)) {
+            tree.levels();
+        }
+        else {
             std::cout << "Nie rozpoznano polecenia!\n";
         }
     }

@@ -12,7 +12,7 @@
 #define UI_CMD_PRINT "print"
 #define UI_CMD_COMP "comp"
 #define UI_CMD_JOIN "join"
-
+#define UI_CMD_LEVELS "levels"
 
 class UserInterface {
 public:
