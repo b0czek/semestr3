@@ -64,19 +64,21 @@ CNode *CTree::leftmostLeaf() {
     return leaf;
 }
 
-void CTree::levels() {
-    bool result = false;
+std::string CTree::levels() {
+    bool success = false;
+    std::string result;
     int i = 1;
     do {
-        result = printLevel(&root, i);
+        success = printLevel(&root, i, result);
+        result += "\n";
         i++;
-        std::cout << "\n";
-    } while(result);
+    } while(success);
+    return result;
 }
 
-bool CTree::printLevel(CNode *node, int level) {
+bool CTree::printLevel(CNode *node, int level, std::string& output) {
     if(level == 1) {
-        std::cout << node->toString(true);
+        output += node->toString(true);
         return true;
     }
     else {
@@ -86,8 +88,8 @@ bool CTree::printLevel(CNode *node, int level) {
         }
         int result = 0;
         for(int i = 0 ; i < children.size(); i++) {
-            result += printLevel(children[i], level - 1);
-            std::cout << " ";
+            result += printLevel(children[i], level - 1, output);
+            output += " ";
         }
         return result != 0;
     }

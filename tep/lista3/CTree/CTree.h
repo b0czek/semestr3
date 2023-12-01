@@ -32,10 +32,10 @@ public:
 
     const std::set<std::string> &getVariables() const;
 
-    void levels();
+    std::string levels();
 
 private:
-    bool printLevel(CNode *node, int level);
+    bool printLevel(CNode *node, int level, std::string& output);
 
     void scanVariables();
 
