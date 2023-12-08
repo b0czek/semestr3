@@ -17,14 +17,13 @@ public:
         scanVariables();
     }
 
-    ~CTree() { }
+    ~CTree() {}
 
-    void parse(const char *data, Parser &parser, ParserParameters<T>& parameters) {
+    void parse(const char *data, Parser &parser, ParserParameters<T> &parameters) {
         root.freeChildren();
         parser.parse(data, &root, parameters);
         variables = parser.getVariables();
     }
-
 
 
     CTree &operator=(const CTree &cOther) {
@@ -65,23 +64,30 @@ public:
             success = printLevel(&root, i, result);
             result += "\n";
             i++;
-        } while(success);
+        } while (success);
         return result;
     }
 
+    void duplicate() {
+        CNode<T> * newroot = root.duplicateByType();
+        if(newroot != NULL) {
+            root.copyFrom(*newroot);
+            delete newroot;
+        }
+    }
+
 private:
-    bool printLevel(CNode<T> *node, int level, std::string& output) {
-        if(level == 1) {
+    bool printLevel(CNode<T> *node, int level, std::string &output) {
+        if (level == 1) {
             output += node->toString(true);
             return true;
-        }
-        else {
+        } else {
             std::vector<CNode<T> *> children = node->getChildren();
-            if(children.size() == 0){
+            if (children.size() == 0) {
                 return false;
             }
             int result = 0;
-            for(int i = 0 ; i < children.size(); i++) {
+            for (int i = 0; i < children.size(); i++) {
                 result += printLevel(children[i], level - 1, output);
                 output += " ";
             }

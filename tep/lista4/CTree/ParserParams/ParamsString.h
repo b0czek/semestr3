@@ -17,7 +17,7 @@
 #define OPERATOR_STR_MUL_ARGS 2
 #define OPERATOR_STR_DIV_ARGS 2
 
-class ParamsString : public ParserParameters<std::string>{
+class ParamsString : public ParserParameters<std::string> {
 public:
     ParamsString();
 

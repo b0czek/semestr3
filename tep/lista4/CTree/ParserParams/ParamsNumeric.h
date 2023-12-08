@@ -4,6 +4,7 @@
 
 #ifndef LISTA3_PARAMSNUMERIC_H
 #define LISTA3_PARAMSNUMERIC_H
+
 #include "../Parser.h"
 
 #define OPERATOR_ADD "+"
@@ -20,16 +21,15 @@
 #define OPERATOR_COS_ARGS 1
 
 
-
-
-template <typename T>
+template<typename T>
 class ParamsNumeric : public ParserParameters<T> {
 public:
     ParamsNumeric() {
         ops = Operators<T>(operators, sizeof(operators) / sizeof(Operator<T>));
 
     }
-    ~ParamsNumeric(){
+
+    ~ParamsNumeric() {
 
     }
 
@@ -40,7 +40,7 @@ public:
             if (!ParserUtilities::isDigit(character) && character != '.') {
                 return false;
             }
-            if(character == '.') {
+            if (character == '.') {
                 dotCounter++;
             }
         }
@@ -93,14 +93,14 @@ private:
 
 };
 
-template < typename T >
+template<typename T>
 const Operator<T> ParamsNumeric<T>::operators[] = {
-    {OPERATOR_ADD, OPERATOR_ADD_ARGS, operator_add},
-    {OPERATOR_SUB, OPERATOR_SUB_ARGS, operator_sub},
-    {OPERATOR_MUL, OPERATOR_MUL_ARGS, operator_mul},
-    {OPERATOR_DIV, OPERATOR_DIV_ARGS, operator_div},
-    {OPERATOR_SIN, OPERATOR_SIN_ARGS, operator_sin},
-    {OPERATOR_COS, OPERATOR_COS_ARGS, operator_cos},
+        {OPERATOR_ADD, OPERATOR_ADD_ARGS, operator_add},
+        {OPERATOR_SUB, OPERATOR_SUB_ARGS, operator_sub},
+        {OPERATOR_MUL, OPERATOR_MUL_ARGS, operator_mul},
+        {OPERATOR_DIV, OPERATOR_DIV_ARGS, operator_div},
+        {OPERATOR_SIN, OPERATOR_SIN_ARGS, operator_sin},
+        {OPERATOR_COS, OPERATOR_COS_ARGS, operator_cos},
 };
 
 #endif //LISTA3_PARAMSNUMERIC_H

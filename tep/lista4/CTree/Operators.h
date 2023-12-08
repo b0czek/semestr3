@@ -24,7 +24,7 @@ public:
     Operators() : operators(NULL), operatorsCount(0) {}
 
     Operators(const Operator<T> *operators, int operatorsCount) : operators(operators),
-                                                                        operatorsCount(operatorsCount) {}
+                                                                  operatorsCount(operatorsCount) {}
 
     const Operator<T> *getOperators() const {
         return operators;

@@ -23,7 +23,7 @@ template<typename T>
 class CNode {
 public:
     union NodeData {
-        T* constValue;
+        T *constValue;
         const Operator<T> *operatorType;
         char *variableName;
 
@@ -44,10 +44,9 @@ public:
     }
 
     void freeData() {
-        if(nodeType == VARIABLE) {
+        if (nodeType == VARIABLE) {
             delete nodeData.variableName;
-        }
-        else if (nodeType == CONSTANT) {
+        } else if (nodeType == CONSTANT) {
             delete nodeData.constValue;
         }
     }
@@ -58,7 +57,7 @@ public:
 
     }
 
-    void copyFrom(const CNode &other) {
+    void copyFrom(const CNode &other, int withChildren = true) {
         freeNode();
 
         nodeType = other.nodeType;
@@ -74,13 +73,15 @@ public:
             nodeData = other.nodeData;
         }
 
-        for (int i = 0; i < other.children.size(); i++) {
-            children.push_back(new CNode(*other.children[i]));
+        if(withChildren) {
+            for (int i = 0; i < other.children.size(); i++) {
+                children.push_back(new CNode(*other.children[i]));
+            }
         }
     }
 
-    void setConstValue(T& constValue) {
-        if(nodeType != CONSTANT) {
+    void setConstValue(T &constValue) {
+        if (nodeType != CONSTANT) {
             freeData();
             nodeType = CONSTANT;
             nodeData.constValue = new T;
@@ -174,6 +175,8 @@ public:
     std::string constToString();
 
 
+    CNode<T> * duplicateByType();
+
 private:
 
     NodeType nodeType;
@@ -183,15 +186,36 @@ private:
 };
 
 
-template <typename T>
+template<typename T>
 std::string CNode<T>::constToString() {
     std::stringstream ss;
     ss << *nodeData.constValue;
     return ss.str();
 }
-template <>
+
+template<>
 inline std::string CNode<std::string>::constToString() {
     return '\"' + *nodeData.constValue + '\"';
 }
+
+template<typename T>
+CNode<T> * CNode<T>::duplicateByType() {
+    CNode<T> *node = new CNode<T>;
+    node->copyFrom(*this);
+    return node;
+}
+
+template<>
+inline CNode<double> * CNode<double>::duplicateByType() {
+    CNode<double> *node = new CNode<double>;
+    node->copyFrom(*this, false);
+    return node;
+}
+
+template<>
+inline CNode<std::string> * CNode<std::string>::duplicateByType() {
+    return NULL;
+}
+
 
 #endif //LISTA3_CNODE_H

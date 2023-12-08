@@ -14,6 +14,7 @@
 #define UI_CMD_COMP "comp"
 #define UI_CMD_JOIN "join"
 #define UI_CMD_LEVELS "levels"
+#define UI_CMD_DUPLICATE "duplicate"
 
 template < typename T>
 class UserInterface {
@@ -64,6 +65,8 @@ public:
                 tree = newTree;
             } else if(startsWithCommand(UI_CMD_LEVELS, input)) {
                 std::cout << tree.levels();
+            } else if(startsWithCommand(UI_CMD_DUPLICATE, input)) {
+                tree.duplicate();
             }
             else {
                 std::cout << "Nie rozpoznano polecenia!\n";
@@ -115,7 +118,11 @@ private:
 
 template < typename T>
 T UserInterface<T>::variableToType(std::string &variable) {
-    return strtod(variable.c_str(), NULL);
+    Token token = {
+            .start = variable.c_str(),
+            .length = variable.length()
+    };
+    return parserParameters->tokenToValue(&token);
 }
 template <>
 std::string UserInterface<std::string>::variableToType(std::string &variable) {
