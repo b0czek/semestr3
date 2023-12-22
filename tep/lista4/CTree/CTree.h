@@ -17,6 +17,11 @@ public:
         scanVariables();
     }
 
+    CTree(const CTree& other) {
+        root = other.root;
+        variables = other.variables;
+    }
+
     ~CTree() {}
 
     void parse(const char *data, Parser &parser, ParserParameters<T> &parameters) {
@@ -34,7 +39,7 @@ public:
     }
 
     CTree operator+(const CTree &cOther) {
-        CTree newTree = CTree(*this);
+        CTree newTree(*this);
         CNode<T> *joinedAt = newTree.leftmostLeaf();
         joinedAt->copyFrom(cOther.root);
 
