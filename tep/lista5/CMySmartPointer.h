@@ -5,61 +5,94 @@
 #ifndef LISTA4_CMYSMARTPOINTER_H
 #define LISTA4_CMYSMARTPOINTER_H
 
+#include <vector>
+
 class CRefCounter
 {
 public:
-    CRefCounter() { i_count = 0; }
-    int iAdd() { return(++i_count); }
-    int iDec() { return(--i_count); };
-    int iGet() { return(i_count); }
-private:
-    int i_count;
-};//class CRefCounter
+    CRefCounter() {
+    }
+    int add(void* ptr) {
+#if DEBUG
+        std::cout << "added pointer "<< (ptr) << " to the counter \n";
+#endif
 
+        pointers.push_back(ptr);
+        return(pointers.size());
+    }
+    int dec(void* ptr) {
+        for(int i = 0 ; i < pointers.size(); i++) {
+            if(pointers[i] == ptr) {
+#if DEBUG
+                std::cout << "deleted pointer "<< (ptr) << " from the counter \n";
+#endif
+
+                pointers.erase(pointers.begin()+ i);
+                return pointers.size();
+            }
+        }
+        return(pointers.size());
+    };
+    int get() {
+        return(pointers.size());
+    }
+private:
+    std::vector<void*> pointers;
+};
 
 template <typename  T>
 class CMySmartPointer
 {
 public:
-    CMySmartPointer(T *pcPointer)
+    CMySmartPointer(T *ptr)
     {
-        pc_pointer = pcPointer;
-        pc_counter = new CRefCounter();
-        pc_counter->iAdd();
-    }//CMySmartPointer(CSellData *pcPointer)
-    CMySmartPointer(const CMySmartPointer &pcOther)
+        pointer = ptr;
+        counter = new CRefCounter();
+        counter->add(this);
+    }
+
+    CMySmartPointer(const CMySmartPointer &other)
     {
-        copyPointer(pcOther);
-    }//CMySmartPointer(const CMySmartPointer &pcOther)
+        copyPointer(other);
+    }
+
     ~CMySmartPointer()
     {
-        if (pc_counter->iDec() == 0)
-        {
-            delete pc_pointer;
-            delete pc_counter;
-        }//if (pc_counter->iDec())
-    }//~CMySmartPointer()
-    T& operator*() { return(*pc_pointer); }
-    T* operator->() { return(pc_pointer); }
+        deletePointer();
+    }
+
+    T& operator*() { return(*pointer); }
+
+    T* operator->() { return(pointer); }
+
     T& operator=(const CMySmartPointer& other) {
-        if (pc_counter->iDec() == 0)
-        {
-            delete pc_pointer;
-            delete pc_counter;
-        }
+        deletePointer();
         copyPointer(other);
 
         return *this;
     }
+
+    CMySmartPointer<T> cDuplicate() {
+        return CMySmartPointer<T>(*this);
+    }
+
 private:
-    CRefCounter *pc_counter;
-    T *pc_pointer;
+    CRefCounter*counter;
+    T *pointer;
 
     void copyPointer(const CMySmartPointer& other) {
-        pc_pointer = other.pc_pointer;
-        pc_counter = other.pc_counter;
-        pc_counter->iAdd();
+        pointer = other.pointer;
+        counter = other.counter;
+        counter->add(this);
     };
+
+    void deletePointer() {
+        if (counter->dec(this) == 0)
+        {
+            delete pointer;
+            delete counter;
+        }
+    }
 
 
 };//class CMySmartPointer
