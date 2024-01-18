@@ -43,23 +43,23 @@ let () =
   Printf.printf "Value at index 0: %d\n" value;
   Printf.printf "Memory dump: [%s]\n" (String.concat "; " (List.map string_of_int dump));;
 
-  module ListMemory : MEMORY = struct
-    type repr = int option list ref
+module ListMemory : MEMORY = struct
+  type repr = int option list ref
+
+  let init size = ref (List.init size (fun _ -> None))
+      
+  let get index memory = 
+    match (List.nth !memory index) with 
+    | Some(value) -> value
+    | None -> failwith "Empty cell!"
+      
+  let set index value memory =
+    memory := List.mapi  (fun idx v -> if idx == index then Some(value) else v) !memory;
+    memory
   
-    let init size = ref (List.init size (fun _ -> None))
-        
-    let get index memory = 
-      match (List.nth !memory index) with 
-      | Some(value) -> value
-      | None -> failwith "Empty cell!"
-        
-    let set index value memory =
-      memory := List.mapi  (fun idx v -> if idx == index then Some(value) else v) !memory;
-      memory
-    
-    let dump memory = 
-      List.map (function Some(v) -> v | None -> 0) !memory
-  end;;
+  let dump memory = 
+    List.map (function Some(v) -> v | None -> 0) !memory
+end;;
   
 
 type instruction = Load of int*int | Add of int*int*int | Sub of int*int*int;;
@@ -98,7 +98,7 @@ module RAMMachine (Memory : MEMORY) = struct
   let dump (memory, _) = Memory.dump memory
 end;;
 
-module ArrayRAMMachine = RAMMachine(ArrayMemory);;
+module ArrayRAMMachine = RAMMachine(ListMemory);;
 
 let () =
   let instructions = [Load(0, 42); Load(3, -6); Add(1, 0, 3); Add(2, 1, 1); Sub(2, 1, 2)] in
