@@ -2,18 +2,26 @@ package Ex2;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Elf {
-    protected BaubleType collectedBaublesType;
-    protected ArrayList<Bauble> boxedBaubles = new ArrayList<>();
 
-    protected int boxCapacity;
+    protected List<BaubleBox> collectedBaubles = new ArrayList<>();
+    protected List<BaubleBoxParams> collectedParams;
 
     protected Elf neighbour = null;
 
-    public Elf(BaubleType collectedBaublesType, int boxCapacity) {
-        this.collectedBaublesType = collectedBaublesType;
-        this.boxCapacity = boxCapacity;
+    public Elf(List<BaubleBoxParams> collectedParams) {
+        this.collectedParams = collectedParams;
+        createBoxes();
+    }
+
+    private void createBoxes() {
+        collectedParams
+                .forEach(params -> collectedBaubles.add(new BaubleBox(params.type, params.capacity)));
+    }
+    private boolean allFull() {
+        return collectedBaubles.stream().allMatch(box -> box.getCapacity() == box.getBaubles().size());
     }
 
 
@@ -21,46 +29,34 @@ public class Elf {
         if(bauble == null) {
             throw new InvalidParameterException();
         }
-        if(bauble.getType() == collectedBaublesType) {
-            if(boxedBaubles.size() < boxCapacity) {
-                System.out.println("bombka trafiła do pudełka");
-                boxedBaubles.add(bauble);
-                if(boxedBaubles.size() == boxCapacity) {
-                    System.out.println("pudełko pełne");
-
+        for(int i = 0 ; i < collectedBaubles.size(); i++)
+        {
+            BaubleBox box = collectedBaubles.get(i);
+            if(box.getBaubleType() == bauble.getType()) {
+                if(box.getCapacity() > box.getBaubles().size()) {
+                    System.out.println("bombka trafiła do pudełka");
+                    box.getBaubles().add(bauble);
+                    if(allFull()) {
+                        System.out.println("pudełko pełne");
+                        collectedBaubles = new ArrayList<>();
+                        createBoxes();
+                    }
+                    return;
                 }
             }
-            else {
-                System.out.println("brak miejsca w pudełku na ten rodzaj bombki");
-            }
-        } else {
-            if(neighbour != null) {
-                System.out.println("bombka została przekaza następnemu elfowi");
-                neighbour.boxBauble(bauble);
-            }
-            else {
-                bauble.setBroken(true);
-                System.out.println("bombka trafiła na podłoge");
-            }
         }
+        if(neighbour != null) {
+            System.out.println("bombka została przekaza następnemu elfowi");
+            neighbour.boxBauble(bauble);
+        }
+        else {
+            bauble.setBroken(true);
+            System.out.println("bombka trafiła na podłoge");
+        }
+
     }
 
 
-    public BaubleType getCollectedBaublesType() {
-        return collectedBaublesType;
-    }
-
-    public ArrayList<Bauble> getBoxedBaubles() {
-        return boxedBaubles;
-    }
-
-    public int getBoxCapacity() {
-        return boxCapacity;
-    }
-
-    public Elf getNeighbour() {
-        return neighbour;
-    }
 
     public void setNeighbour(Elf neighbour) {
         this.neighbour = neighbour;

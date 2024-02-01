@@ -8,7 +8,7 @@ public class Main {
         Elf slave1 = new MushroomBaubleElf(1);
         Elf slave2 = new IcycleElf(1);
         Elf slave3 = new SmallSphereElf(2);
-        Elf master = new BigSphereElf(3);
+        Elf master = new SphereElf(4,2);
 
         slave3.setNeighbour(slave2);
         master.setNeighbour(slave3);
@@ -18,6 +18,9 @@ public class Main {
             new MushroomBauble("czerwony", "kropki"),
             new SmallSphereBauble("zielony", "wstążki"),
             new SmallSphereBauble("pomarańczowy", "brak"),
+            new SmallSphereBauble("zolty", "brak"),
+            new SmallSphereBauble("czerwony", "brak"),
+            new SmallSphereBauble("biały", "brak"),
             new BigSphereBauble("zielony", "kratka"),
             new BigSphereBauble("fioletowy", "snowflake"),
             new BigSphereBauble("żółty", "brokat"),
