@@ -5,60 +5,45 @@ trait Super extends High
 type Permission = Low // lowest permission rank
 
 trait User[+UR <: Permission, +UW <: Permission] {
-  def retrieveFromTerminal(retrieved: String): Unit
-  def passToTerminal(): String
 
+  def secret: String
+  def secret_=(newSecret: String): Unit
 }
 
 class Terminal[TR <: Permission, TW <: TR](initialSecret: String) {
   private var secret: String = initialSecret
 
-  def read(user: User[TR,Permission]): Unit = {
-    user.retrieveFromTerminal(secret)
+  def read(user: User[TR,_]): Unit = {
+    user.secret = secret
   }
-  def write(user: User[Permission,TW]): Unit = {
-    secret = user.passToTerminal()
+  def write(user: User[_,TW]): Unit = {
+    secret = user.secret
   }
 }
 
 object LowUser extends User[Low, Low] {
    var secret: String = "???"
 
-   override def retrieveFromTerminal(retrieved: String): Unit = secret = retrieved
-
-   override def passToTerminal(): String = secret
 }
 
 object LowHighUser extends User[Low, High] {
   var secret: String = "lowhigh"
 
-  override def retrieveFromTerminal(retrieved: String): Unit = secret = retrieved
-
-  override def passToTerminal(): String = secret
 }
 
 object HighLowUser extends User[High, Low] {
   var secret: String = "highlow"
 
-  override def retrieveFromTerminal(retrieved: String): Unit = secret = retrieved
-
-  override def passToTerminal(): String = secret
 }
 
 object HighUser extends User[High, High] {
   var secret: String = "faded"
 
-  override def retrieveFromTerminal(retrieved: String): Unit = secret = retrieved
-
-  override def passToTerminal(): String = secret
 }
 
 object SuperUser extends User[Super, Super] {
   var secret: String = "super"
 
-  override def retrieveFromTerminal(retrieved: String): Unit = secret = retrieved
-
-  override def passToTerminal(): String = secret
 }
 
 val lowTerminal = new Terminal[Low, Low]("lowterm")
@@ -100,3 +85,4 @@ val superTerminal = new Terminal[Super, Super]("superterm")
 //superTerminal.read(HighLowUser)
 //superTerminal.read(HighUser)
 superTerminal.read(SuperUser)
+
